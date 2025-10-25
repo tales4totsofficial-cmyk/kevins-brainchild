@@ -31,13 +31,13 @@ export const SpendingAnalysisScreen: React.FC<SpendingAnalysisScreenProps> = ({
 
   const renderSpendingVisualization = () => {
     const spendingCategories = [
-      { name: 'Travel', amount: userProfile.travel?.amount || 0, frequency: userProfile.travel?.frequency || 'monthly', color: '#FF6B6B' },
-      { name: 'Dining', amount: userProfile.dining?.amount || 0, frequency: userProfile.dining?.frequency || 'monthly', color: '#4ECDC4' },
-      { name: 'Shopping', amount: userProfile.shopping?.amount || 0, frequency: userProfile.shopping?.frequency || 'monthly', color: '#45B7D1' },
-      { name: 'Groceries', amount: userProfile.groceries?.amount || 0, frequency: userProfile.groceries?.frequency || 'monthly', color: '#96CEB4' },
-      { name: 'Entertainment', amount: userProfile.entertainment?.amount || 0, frequency: userProfile.entertainment?.frequency || 'monthly', color: '#FFEAA7' },
-      { name: 'Utilities', amount: userProfile.utilities?.amount || 0, frequency: userProfile.utilities?.frequency || 'monthly', color: '#DDA0DD' },
-      { name: 'Other', amount: userProfile.other?.amount || 0, frequency: userProfile.other?.frequency || 'monthly', color: '#98D8C8' }
+      { name: 'Travel', amount: userProfile.travel?.amount || 0, frequency: userProfile.travel?.frequency || 'monthly', color: '#FF6B6B', icon: '✈️' },
+      { name: 'Dining', amount: userProfile.dining?.amount || 0, frequency: userProfile.dining?.frequency || 'monthly', color: '#4ECDC4', icon: '🍽️' },
+      { name: 'Shopping', amount: userProfile.shopping?.amount || 0, frequency: userProfile.shopping?.frequency || 'monthly', color: '#45B7D1', icon: '🛍️' },
+      { name: 'Groceries', amount: userProfile.groceries?.amount || 0, frequency: userProfile.groceries?.frequency || 'monthly', color: '#96CEB4', icon: '🛒' },
+      { name: 'Entertainment', amount: userProfile.entertainment?.amount || 0, frequency: userProfile.entertainment?.frequency || 'monthly', color: '#FFEAA7', icon: '🎬' },
+      { name: 'Utilities', amount: userProfile.utilities?.amount || 0, frequency: userProfile.utilities?.frequency || 'monthly', color: '#DDA0DD', icon: '⚡' },
+      { name: 'Other', amount: userProfile.other?.amount || 0, frequency: userProfile.other?.frequency || 'monthly', color: '#98D8C8', icon: '📦' }
     ];
 
     const monthlyAmounts = spendingCategories.map(cat => {
@@ -45,35 +45,52 @@ export const SpendingAnalysisScreen: React.FC<SpendingAnalysisScreenProps> = ({
       return { ...cat, monthlyAmount: cat.amount * multiplier };
     }).filter(cat => cat.monthlyAmount > 0);
 
-    const maxAmount = Math.max(...monthlyAmounts.map(cat => cat.monthlyAmount));
+    const totalSpending = monthlyAmounts.reduce((sum, cat) => sum + cat.monthlyAmount, 0);
 
     return (
       <View style={styles.visualizationContainer}>
         <Text style={styles.visualizationTitle}>📊 Your Spending Analysis</Text>
         <Text style={styles.visualizationSubtitle}>Monthly spending breakdown with recommendations</Text>
         
-        {monthlyAmounts.map((category, index) => {
-          const percentage = (category.monthlyAmount / maxAmount) * 100;
-          return (
-            <View key={index} style={styles.spendingBar}>
-              <View style={styles.barLabel}>
-                <Text style={styles.categoryName}>{category.name}</Text>
-                <Text style={styles.categoryAmount}>S${category.monthlyAmount.toLocaleString()}</Text>
-              </View>
-              <View style={styles.barContainer}>
-                <View 
-                  style={[
-                    styles.barFill, 
-                    { 
-                      width: `${percentage}%`, 
-                      backgroundColor: category.color 
-                    }
-                  ]} 
-                />
-              </View>
-            </View>
-          );
-        })}
+        <View style={styles.pieChartContainer}>
+          <View style={styles.pieChart}>
+            {monthlyAmounts.map((category, index) => {
+              const percentage = (category.monthlyAmount / totalSpending) * 100;
+              const startAngle = monthlyAmounts.slice(0, index).reduce((sum, cat) => sum + (cat.monthlyAmount / totalSpending) * 360, 0);
+              const endAngle = startAngle + (category.monthlyAmount / totalSpending) * 360;
+              
+              return (
+                <View key={index} style={styles.pieSegment}>
+                  <View 
+                    style={[
+                      styles.pieSlice,
+                      { 
+                        backgroundColor: category.color,
+                        transform: [{ rotate: `${startAngle}deg` }]
+                      }
+                    ]}
+                  />
+                </View>
+              );
+            })}
+          </View>
+          
+          <View style={styles.pieLegend}>
+            {monthlyAmounts.map((category, index) => {
+              const percentage = (category.monthlyAmount / totalSpending) * 100;
+              return (
+                <View key={index} style={styles.legendItem}>
+                  <View style={[styles.legendColor, { backgroundColor: category.color }]} />
+                  <Text style={styles.legendIcon}>{category.icon}</Text>
+                  <View style={styles.legendText}>
+                    <Text style={styles.legendName}>{category.name}</Text>
+                    <Text style={styles.legendAmount}>S${category.monthlyAmount.toLocaleString()} ({percentage.toFixed(1)}%)</Text>
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+        </View>
       </View>
     );
   };
@@ -320,33 +337,62 @@ const styles = StyleSheet.create({
     color: '#6c757d',
     marginBottom: 12,
   },
-  spendingBar: {
+  pieChartContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  pieChart: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#f8f9fa',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  pieSegment: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
+  pieSlice: {
+    position: 'absolute',
+    width: '50%',
+    height: '100%',
+    right: 0,
+    transformOrigin: 'left center',
+  },
+  pieLegend: {
+    flex: 1,
+    marginLeft: 16,
+  },
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 8,
   },
-  barLabel: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 4,
+  legendColor: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginRight: 8,
   },
-  categoryName: {
+  legendIcon: {
+    fontSize: 14,
+    marginRight: 8,
+  },
+  legendText: {
+    flex: 1,
+  },
+  legendName: {
     fontSize: 12,
     fontWeight: '600',
     color: '#1a1a1a',
+    marginBottom: 2,
   },
-  categoryAmount: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: '#007AFF',
-  },
-  barContainer: {
-    height: 8,
-    backgroundColor: '#f8f9fa',
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  barFill: {
-    height: '100%',
-    borderRadius: 4,
+  legendAmount: {
+    fontSize: 10,
+    color: '#6c757d',
   },
   recommendationsContainer: {
     backgroundColor: '#fff',
