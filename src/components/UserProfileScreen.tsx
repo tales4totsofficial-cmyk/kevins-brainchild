@@ -211,16 +211,22 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
                 styles.sliderThumb,
                 { left: `${((profile.monthlySpendingAppetite || 5000) - 2000) / (50000 - 2000) * 100}%` }
               ]}
-              onPress={() => {}} // Will be handled by gesture
+              onPress={(event) => {
+                const trackWidth = event.currentTarget.offsetWidth || 200;
+                const clickX = event.nativeEvent.locationX;
+                const percentage = Math.max(0, Math.min(1, clickX / trackWidth));
+                const newValue = Math.round(2000 + (percentage * (50000 - 2000)));
+                updateSpendingPercentages(newValue);
+              }}
             />
           </View>
           <Text style={styles.sliderLabel}>S$50,000</Text>
         </View>
 
         <View style={styles.quickSelectContainer}>
-          <Text style={styles.quickSelectLabel}>Quick Select:</Text>
+          <Text style={styles.quickSelectLabel}>Select Amount:</Text>
           <View style={styles.quickSelectButtons}>
-            {[5000, 10000, 15000, 25000, 35000].map((amount) => (
+            {[2000, 5000, 10000, 15000, 20000, 25000, 35000, 50000].map((amount) => (
               <TouchableOpacity
                 key={amount}
                 style={[
@@ -238,6 +244,23 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
               </TouchableOpacity>
             ))}
           </View>
+        </View>
+
+        <View style={styles.customAmountContainer}>
+          <Text style={styles.customAmountLabel}>Or enter custom amount:</Text>
+          <TextInput
+            style={styles.customAmountInput}
+            value={profile.monthlySpendingAppetite?.toString() || ''}
+            onChangeText={(text) => {
+              const amount = parseInt(text) || 0;
+              if (amount >= 2000 && amount <= 50000) {
+                updateSpendingPercentages(amount);
+              }
+            }}
+            placeholder="Enter amount"
+            keyboardType="numeric"
+            selectTextOnFocus={true}
+          />
         </View>
 
         <Text style={styles.sliderDescription}>
@@ -871,6 +894,27 @@ const styles = StyleSheet.create({
     color: '#666',
     textAlign: 'center',
     fontStyle: 'italic',
+  },
+  customAmountContainer: {
+    marginTop: 16,
+    marginBottom: 12,
+  },
+  customAmountLabel: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  customAmountInput: {
+    borderWidth: 2,
+    borderColor: '#007AFF',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+    backgroundColor: '#fff',
+    textAlign: 'center',
+    fontWeight: '600',
+    color: '#333',
   },
   spendingGrid: {
     flexDirection: 'row',
