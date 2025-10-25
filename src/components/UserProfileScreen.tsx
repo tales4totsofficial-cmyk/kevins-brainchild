@@ -88,9 +88,9 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
   const validateProfile = (): boolean => {
     if (!profile.name || !profile.monthlySpendingAppetite) {
       if (!profile.name) {
-        Alert.alert('Missing Information', 'Please fill in your full name in Step 1.');
+        Alert.alert('Required Field Missing', 'Please enter your full name to continue.');
       } else if (!profile.monthlySpendingAppetite) {
-        Alert.alert('Missing Information', 'Please set your monthly spending appetite in Step 1.');
+        Alert.alert('Required Field Missing', 'Please set your monthly spending appetite to continue.');
       }
       return false;
     }
@@ -162,13 +162,19 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
       <Text style={styles.stepTitle}>Personal Information & Preferences</Text>
       
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>Full Name</Text>
+        <Text style={styles.label}>Full Name *</Text>
         <TextInput
-          style={styles.textInput}
+          style={[
+            styles.textInput,
+            !profile.name && styles.requiredField
+          ]}
           value={profile.name || ''}
           onChangeText={(text) => setProfile(prev => ({ ...prev, name: text }))}
           placeholder="Enter your full name"
         />
+        {!profile.name && (
+          <Text style={styles.requiredText}>Name is required</Text>
+        )}
       </View>
 
       <View style={styles.inputGroup}>
@@ -651,6 +657,16 @@ const styles = StyleSheet.create({
     padding: 12,
     fontSize: 16,
     backgroundColor: '#fff',
+  },
+  requiredField: {
+    borderColor: '#ff6b6b',
+    borderWidth: 2,
+  },
+  requiredText: {
+    color: '#ff6b6b',
+    fontSize: 12,
+    marginTop: 4,
+    fontWeight: '500',
   },
   frequencyButtons: {
     flexDirection: 'row',
