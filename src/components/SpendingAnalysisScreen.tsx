@@ -31,13 +31,13 @@ export const SpendingAnalysisScreen: React.FC<SpendingAnalysisScreenProps> = ({
 
   const renderSpendingVisualization = () => {
     const spendingCategories = [
-      { name: 'Travel', amount: userProfile.travel?.amount || 0, frequency: userProfile.travel?.frequency || 'monthly', color: '#FF6B6B', icon: '✈️' },
-      { name: 'Dining', amount: userProfile.dining?.amount || 0, frequency: userProfile.dining?.frequency || 'monthly', color: '#4ECDC4', icon: '🍽️' },
-      { name: 'Shopping', amount: userProfile.shopping?.amount || 0, frequency: userProfile.shopping?.frequency || 'monthly', color: '#45B7D1', icon: '🛍️' },
-      { name: 'Groceries', amount: userProfile.groceries?.amount || 0, frequency: userProfile.groceries?.frequency || 'monthly', color: '#96CEB4', icon: '🛒' },
-      { name: 'Entertainment', amount: userProfile.entertainment?.amount || 0, frequency: userProfile.entertainment?.frequency || 'monthly', color: '#FFEAA7', icon: '🎬' },
-      { name: 'Utilities', amount: userProfile.utilities?.amount || 0, frequency: userProfile.utilities?.frequency || 'monthly', color: '#DDA0DD', icon: '⚡' },
-      { name: 'Other', amount: userProfile.other?.amount || 0, frequency: userProfile.other?.frequency || 'monthly', color: '#98D8C8', icon: '📦' }
+      { name: 'Travel', amount: userProfile.travel?.amount || 0, frequency: userProfile.travel?.frequency || 'monthly', color: '#E74C3C', icon: '✈️' },
+      { name: 'Dining', amount: userProfile.dining?.amount || 0, frequency: userProfile.dining?.frequency || 'monthly', color: '#3498DB', icon: '🍽️' },
+      { name: 'Shopping', amount: userProfile.shopping?.amount || 0, frequency: userProfile.shopping?.frequency || 'monthly', color: '#9B59B6', icon: '🛍️' },
+      { name: 'Groceries', amount: userProfile.groceries?.amount || 0, frequency: userProfile.groceries?.frequency || 'monthly', color: '#2ECC71', icon: '🛒' },
+      { name: 'Entertainment', amount: userProfile.entertainment?.amount || 0, frequency: userProfile.entertainment?.frequency || 'monthly', color: '#F39C12', icon: '🎬' },
+      { name: 'Utilities', amount: userProfile.utilities?.amount || 0, frequency: userProfile.utilities?.frequency || 'monthly', color: '#1ABC9C', icon: '⚡' },
+      { name: 'Other', amount: userProfile.other?.amount || 0, frequency: userProfile.other?.frequency || 'monthly', color: '#34495E', icon: '📦' }
     ];
 
     const monthlyAmounts = spendingCategories.map(cat => {
@@ -346,9 +346,11 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: '#f8f9fa',
+    backgroundColor: '#ffffff',
     position: 'relative',
     overflow: 'hidden',
+    borderWidth: 2,
+    borderColor: '#e9ecef',
   },
   pieSegment: {
     position: 'absolute',
@@ -372,10 +374,12 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   legendColor: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+    width: 14,
+    height: 14,
+    borderRadius: 7,
     marginRight: 8,
+    borderWidth: 1,
+    borderColor: '#ddd',
   },
   legendIcon: {
     fontSize: 14,
