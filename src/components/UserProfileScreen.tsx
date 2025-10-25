@@ -160,7 +160,6 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
   const renderStep1 = () => (
     <View style={styles.stepContainer}>
       <Text style={styles.stepTitle}>Personal Information & Preferences</Text>
-      <Text style={styles.stepDescription}>Tell us about yourself and your card preferences</Text>
       
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Full Name</Text>
@@ -617,27 +616,27 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 20,
+    padding: 16,
   },
   stepContainer: {
     backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 20,
-    marginBottom: 20,
+    padding: 16,
+    marginBottom: 16,
   },
   stepTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 8,
+    marginBottom: 4,
   },
   stepDescription: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#666',
-    marginBottom: 20,
+    marginBottom: 16,
   },
   inputGroup: {
-    marginBottom: 20,
+    marginBottom: 16,
   },
   label: {
     fontSize: 16,
@@ -684,9 +683,9 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   preferenceButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: '#ddd',
     backgroundColor: '#fff',
@@ -696,7 +695,7 @@ const styles = StyleSheet.create({
     borderColor: '#007AFF',
   },
   preferenceButtonText: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#333',
   },
   preferenceButtonTextSelected: {
@@ -840,13 +839,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   preferencesSection: {
-    marginBottom: 24,
+    marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 12,
+    marginBottom: 8,
   },
   budgetSummary: {
     backgroundColor: '#f8f9fa',
