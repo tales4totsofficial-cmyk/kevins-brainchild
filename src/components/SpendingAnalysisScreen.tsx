@@ -52,36 +52,32 @@ export const SpendingAnalysisScreen: React.FC<SpendingAnalysisScreenProps> = ({
         <Text style={styles.visualizationTitle}>📊 Your Spending Analysis</Text>
         <Text style={styles.visualizationSubtitle}>Monthly spending breakdown with recommendations</Text>
         
-        <View style={styles.chartContainer}>
-          <View style={styles.chartVisualization}>
-            <Text style={styles.chartTitle}>Spending Breakdown</Text>
-            <View style={styles.chartBars}>
-              {monthlyAmounts.map((category, index) => {
-                const percentage = (category.monthlyAmount / totalSpending) * 100;
-                return (
-                  <View key={index} style={styles.chartBarContainer}>
-                    <View style={styles.chartBarLabel}>
-                      <Text style={styles.chartBarIcon}>{category.icon}</Text>
-                      <Text style={styles.chartBarName}>{category.name}</Text>
-                    </View>
-                    <View style={styles.chartBarTrack}>
-                      <View 
-                        style={[
-                          styles.chartBarFill,
-                          { 
-                            width: `${percentage}%`,
-                            backgroundColor: category.color
-                          }
-                        ]}
-                      />
-                    </View>
-                    <Text style={styles.chartBarValue}>
-                      S${category.monthlyAmount.toLocaleString()} ({percentage.toFixed(1)}%)
-                    </Text>
+        <View style={styles.compactChartContainer}>
+          <View style={styles.compactChartGrid}>
+            {monthlyAmounts.map((category, index) => {
+              const percentage = (category.monthlyAmount / totalSpending) * 100;
+              return (
+                <View key={index} style={styles.compactChartItem}>
+                  <View style={styles.compactChartHeader}>
+                    <Text style={styles.compactChartIcon}>{category.icon}</Text>
+                    <Text style={styles.compactChartName}>{category.name}</Text>
+                    <Text style={styles.compactChartPercentage}>{percentage.toFixed(0)}%</Text>
                   </View>
-                );
-              })}
-            </View>
+                  <View style={styles.compactChartBar}>
+                    <View 
+                      style={[
+                        styles.compactChartFill,
+                        { 
+                          width: `${percentage}%`,
+                          backgroundColor: category.color
+                        }
+                      ]}
+                    />
+                  </View>
+                  <Text style={styles.compactChartAmount}>S${category.monthlyAmount.toLocaleString()}</Text>
+                </View>
+              );
+            })}
           </View>
         </View>
       </View>
@@ -330,56 +326,59 @@ const styles = StyleSheet.create({
     color: '#6c757d',
     marginBottom: 12,
   },
-  chartContainer: {
+  compactChartContainer: {
     marginTop: 8,
   },
-  chartVisualization: {
-    backgroundColor: '#f8f9fa',
-    borderRadius: 8,
-    padding: 12,
-  },
-  chartTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  chartBars: {
+  compactChartGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
+    justifyContent: 'space-between',
   },
-  chartBarContainer: {
-    marginBottom: 8,
+  compactChartItem: {
+    width: '48%',
+    backgroundColor: '#f8f9fa',
+    borderRadius: 6,
+    padding: 8,
+    marginBottom: 6,
   },
-  chartBarLabel: {
+  compactChartHeader: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 4,
   },
-  chartBarIcon: {
-    fontSize: 16,
-    marginRight: 6,
+  compactChartIcon: {
+    fontSize: 14,
+    marginRight: 4,
   },
-  chartBarName: {
-    fontSize: 12,
+  compactChartName: {
+    fontSize: 10,
     fontWeight: '600',
     color: '#333',
+    flex: 1,
   },
-  chartBarTrack: {
-    height: 8,
-    backgroundColor: '#e9ecef',
-    borderRadius: 4,
-    overflow: 'hidden',
-    marginBottom: 4,
-  },
-  chartBarFill: {
-    height: '100%',
-    borderRadius: 4,
-  },
-  chartBarValue: {
+  compactChartPercentage: {
     fontSize: 10,
+    fontWeight: 'bold',
+    color: '#007AFF',
+  },
+  compactChartBar: {
+    height: 4,
+    backgroundColor: '#e9ecef',
+    borderRadius: 2,
+    overflow: 'hidden',
+    marginBottom: 3,
+  },
+  compactChartFill: {
+    height: '100%',
+    borderRadius: 2,
+  },
+  compactChartAmount: {
+    fontSize: 9,
     color: '#666',
-    textAlign: 'right',
+    textAlign: 'center',
+    fontWeight: '500',
   },
   recommendationsContainer: {
     backgroundColor: '#fff',
