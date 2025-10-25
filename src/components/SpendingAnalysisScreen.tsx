@@ -52,35 +52,16 @@ export const SpendingAnalysisScreen: React.FC<SpendingAnalysisScreenProps> = ({
         <Text style={styles.visualizationTitle}>📊 Your Spending Analysis</Text>
         <Text style={styles.visualizationSubtitle}>Monthly spending breakdown with recommendations</Text>
         
-        <View style={styles.modernChartContainer}>
-          <View style={styles.modernChartList}>
+        <View style={styles.compactSpendingContainer}>
+          <View style={styles.compactSpendingGrid}>
             {monthlyAmounts.map((category, index) => {
               const percentage = (category.monthlyAmount / totalSpending) * 100;
               return (
-                <View key={index} style={styles.modernChartItem}>
-                  <View style={styles.modernChartRow}>
-                    <View style={styles.modernChartLeft}>
-                      <Text style={styles.modernChartIcon}>{category.icon}</Text>
-                      <Text style={styles.modernChartName}>{category.name}</Text>
-                    </View>
-                    <View style={styles.modernChartRight}>
-                      <Text style={styles.modernChartAmount}>S${category.monthlyAmount.toLocaleString()}</Text>
-                      <Text style={styles.modernChartPercentage}>{percentage.toFixed(0)}%</Text>
-                    </View>
-                  </View>
-                  <View style={styles.modernChartProgressContainer}>
-                    <View style={styles.modernChartProgressTrack}>
-                      <View 
-                        style={[
-                          styles.modernChartProgressFill,
-                          { 
-                            width: `${percentage}%`,
-                            backgroundColor: category.color
-                          }
-                        ]}
-                      />
-                    </View>
-                  </View>
+                <View key={index} style={styles.compactSpendingItem}>
+                  <Text style={styles.compactSpendingIcon}>{category.icon}</Text>
+                  <Text style={styles.compactSpendingName}>{category.name}</Text>
+                  <Text style={styles.compactSpendingAmount}>S${category.monthlyAmount.toLocaleString()}</Text>
+                  <Text style={styles.compactSpendingPercentage}>{percentage.toFixed(0)}%</Text>
                 </View>
               );
             })}
@@ -332,71 +313,46 @@ const styles = StyleSheet.create({
     color: '#6c757d',
     marginBottom: 12,
   },
-  modernChartContainer: {
+  compactSpendingContainer: {
     marginTop: 8,
   },
-  modernChartList: {
-    gap: 6,
-  },
-  modernChartItem: {
-    backgroundColor: '#ffffff',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
-    borderWidth: 1,
-    borderColor: '#f0f0f0',
-  },
-  modernChartRow: {
+  compactSpendingGrid: {
     flexDirection: 'row',
-    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 4,
     justifyContent: 'space-between',
-    marginBottom: 8,
   },
-  modernChartLeft: {
-    flexDirection: 'row',
+  compactSpendingItem: {
+    width: '48%',
+    backgroundColor: '#f8f9fa',
+    borderRadius: 6,
+    padding: 8,
+    marginBottom: 4,
     alignItems: 'center',
-    flex: 1,
+    borderWidth: 1,
+    borderColor: '#e9ecef',
   },
-  modernChartIcon: {
-    fontSize: 16,
-    marginRight: 8,
+  compactSpendingIcon: {
+    fontSize: 18,
+    marginBottom: 4,
   },
-  modernChartName: {
-    fontSize: 14,
+  compactSpendingName: {
+    fontSize: 10,
     fontWeight: '600',
-    color: '#1a1a1a',
+    color: '#333',
+    marginBottom: 2,
+    textAlign: 'center',
   },
-  modernChartRight: {
-    alignItems: 'flex-end',
-  },
-  modernChartAmount: {
-    fontSize: 14,
+  compactSpendingAmount: {
+    fontSize: 12,
     fontWeight: 'bold',
     color: '#1a1a1a',
     marginBottom: 2,
   },
-  modernChartPercentage: {
-    fontSize: 12,
+  compactSpendingPercentage: {
+    fontSize: 10,
     fontWeight: '600',
     color: '#007AFF',
-  },
-  modernChartProgressContainer: {
-    marginTop: 4,
-  },
-  modernChartProgressTrack: {
-    height: 6,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  modernChartProgressFill: {
-    height: '100%',
-    borderRadius: 3,
   },
   recommendationsContainer: {
     backgroundColor: '#fff',
