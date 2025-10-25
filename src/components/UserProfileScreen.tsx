@@ -622,7 +622,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: 16,
+    padding: 12,
   },
   stepContainer: {
     backgroundColor: '#fff',
@@ -670,11 +670,13 @@ const styles = StyleSheet.create({
   },
   frequencyButtons: {
     flexDirection: 'row',
-    gap: 10,
+    gap: 8,
+    flexWrap: 'wrap',
   },
   frequencyButton: {
     flex: 1,
-    padding: 12,
+    minWidth: 80,
+    padding: 10,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#ddd',
@@ -696,7 +698,8 @@ const styles = StyleSheet.create({
   preferenceButtons: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 6,
+    justifyContent: 'flex-start',
   },
   preferenceButton: {
     paddingHorizontal: 12,
@@ -748,7 +751,8 @@ const styles = StyleSheet.create({
   sliderContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 16,
+    paddingHorizontal: 4,
   },
   sliderTrack: {
     flex: 1,
@@ -796,7 +800,8 @@ const styles = StyleSheet.create({
   quickSelectButtons: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 6,
+    justifyContent: 'center',
   },
   quickSelectButton: {
     paddingHorizontal: 12,
@@ -827,15 +832,17 @@ const styles = StyleSheet.create({
   spendingGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
+    gap: 8,
+    justifyContent: 'space-between',
   },
   spendingCard: {
     width: '48%',
     backgroundColor: '#f8f9fa',
     borderRadius: 12,
-    padding: 16,
+    padding: 12,
     borderWidth: 1,
     borderColor: '#e9ecef',
+    marginBottom: 8,
   },
   spendingCardTitle: {
     fontSize: 16,
