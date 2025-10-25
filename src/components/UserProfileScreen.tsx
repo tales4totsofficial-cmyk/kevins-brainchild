@@ -94,6 +94,20 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
       }
       return false;
     }
+    
+    // Check if spending exceeds budget
+    const totalSpending = calculateTotalSpending(profile);
+    const monthlyAppetite = profile.monthlySpendingAppetite || 0;
+    
+    if (totalSpending > monthlyAppetite) {
+      Alert.alert(
+        'Budget Exceeded',
+        `Your total spending (S$${totalSpending.toLocaleString()}) exceeds your monthly spending appetite (S$${monthlyAppetite.toLocaleString()}). Please adjust your spending amounts to continue.`,
+        [{ text: 'OK' }]
+      );
+      return false;
+    }
+    
     return true;
   };
 
@@ -574,11 +588,25 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
 
       <View style={styles.footer}>
         <TouchableOpacity
-          style={[styles.nextButton, currentStep === totalSteps && styles.completeButton]}
+          style={[
+            styles.nextButton, 
+            currentStep === totalSteps && styles.completeButton,
+            currentStep === totalSteps && calculateTotalSpending(profile) > (profile.monthlySpendingAppetite || 0) && styles.disabledButton
+          ]}
           onPress={handleNext}
+          disabled={currentStep === totalSteps && calculateTotalSpending(profile) > (profile.monthlySpendingAppetite || 0)}
         >
-          <Text style={styles.nextButtonText}>
-            {currentStep === totalSteps ? 'Create your spending profile' : 'Next'}
+          <Text style={[
+            styles.nextButtonText,
+            currentStep === totalSteps && calculateTotalSpending(profile) > (profile.monthlySpendingAppetite || 0) && styles.disabledButtonText
+          ]}>
+            {currentStep === totalSteps ? 
+              (calculateTotalSpending(profile) > (profile.monthlySpendingAppetite || 0) ? 
+                'Fix budget to continue' : 
+                'Create your spending profile'
+              ) : 
+              'Next'
+            }
           </Text>
         </TouchableOpacity>
       </View>
@@ -744,10 +772,17 @@ const styles = StyleSheet.create({
   completeButton: {
     backgroundColor: '#34C759',
   },
+  disabledButton: {
+    backgroundColor: '#ccc',
+    opacity: 0.6,
+  },
   nextButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  disabledButtonText: {
+    color: '#666',
   },
   sliderValue: {
     fontSize: 24,
