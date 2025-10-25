@@ -52,43 +52,36 @@ export const SpendingAnalysisScreen: React.FC<SpendingAnalysisScreenProps> = ({
         <Text style={styles.visualizationTitle}>📊 Your Spending Analysis</Text>
         <Text style={styles.visualizationSubtitle}>Monthly spending breakdown with recommendations</Text>
         
-        <View style={styles.pieChartContainer}>
-          <View style={styles.pieChart}>
-            {monthlyAmounts.map((category, index) => {
-              const percentage = (category.monthlyAmount / totalSpending) * 100;
-              const startAngle = monthlyAmounts.slice(0, index).reduce((sum, cat) => sum + (cat.monthlyAmount / totalSpending) * 360, 0);
-              const endAngle = startAngle + (category.monthlyAmount / totalSpending) * 360;
-              
-              return (
-                <View key={index} style={styles.pieSegment}>
-                  <View 
-                    style={[
-                      styles.pieSlice,
-                      { 
-                        backgroundColor: category.color,
-                        transform: [{ rotate: `${startAngle}deg` }]
-                      }
-                    ]}
-                  />
-                </View>
-              );
-            })}
-          </View>
-          
-          <View style={styles.pieLegend}>
-            {monthlyAmounts.map((category, index) => {
-              const percentage = (category.monthlyAmount / totalSpending) * 100;
-              return (
-                <View key={index} style={styles.legendItem}>
-                  <View style={[styles.legendColor, { backgroundColor: category.color }]} />
-                  <Text style={styles.legendIcon}>{category.icon}</Text>
-                  <View style={styles.legendText}>
-                    <Text style={styles.legendName}>{category.name}</Text>
-                    <Text style={styles.legendAmount}>S${category.monthlyAmount.toLocaleString()} ({percentage.toFixed(1)}%)</Text>
+        <View style={styles.chartContainer}>
+          <View style={styles.chartVisualization}>
+            <Text style={styles.chartTitle}>Spending Breakdown</Text>
+            <View style={styles.chartBars}>
+              {monthlyAmounts.map((category, index) => {
+                const percentage = (category.monthlyAmount / totalSpending) * 100;
+                return (
+                  <View key={index} style={styles.chartBarContainer}>
+                    <View style={styles.chartBarLabel}>
+                      <Text style={styles.chartBarIcon}>{category.icon}</Text>
+                      <Text style={styles.chartBarName}>{category.name}</Text>
+                    </View>
+                    <View style={styles.chartBarTrack}>
+                      <View 
+                        style={[
+                          styles.chartBarFill,
+                          { 
+                            width: `${percentage}%`,
+                            backgroundColor: category.color
+                          }
+                        ]}
+                      />
+                    </View>
+                    <Text style={styles.chartBarValue}>
+                      S${category.monthlyAmount.toLocaleString()} ({percentage.toFixed(1)}%)
+                    </Text>
                   </View>
-                </View>
-              );
-            })}
+                );
+              })}
+            </View>
           </View>
         </View>
       </View>
@@ -337,66 +330,56 @@ const styles = StyleSheet.create({
     color: '#6c757d',
     marginBottom: 12,
   },
-  pieChartContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  chartContainer: {
+    marginTop: 8,
   },
-  pieChart: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: '#ffffff',
-    position: 'relative',
-    overflow: 'hidden',
-    borderWidth: 2,
-    borderColor: '#e9ecef',
+  chartVisualization: {
+    backgroundColor: '#f8f9fa',
+    borderRadius: 8,
+    padding: 12,
   },
-  pieSegment: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
+  chartTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 12,
+    textAlign: 'center',
   },
-  pieSlice: {
-    position: 'absolute',
-    width: '50%',
-    height: '100%',
-    right: 0,
-    transformOrigin: 'left center',
+  chartBars: {
+    gap: 8,
   },
-  pieLegend: {
-    flex: 1,
-    marginLeft: 16,
-  },
-  legendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  chartBarContainer: {
     marginBottom: 8,
   },
-  legendColor: {
-    width: 14,
-    height: 14,
-    borderRadius: 7,
-    marginRight: 8,
-    borderWidth: 1,
-    borderColor: '#ddd',
+  chartBarLabel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
   },
-  legendIcon: {
-    fontSize: 14,
-    marginRight: 8,
+  chartBarIcon: {
+    fontSize: 16,
+    marginRight: 6,
   },
-  legendText: {
-    flex: 1,
-  },
-  legendName: {
+  chartBarName: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#1a1a1a',
-    marginBottom: 2,
+    color: '#333',
   },
-  legendAmount: {
+  chartBarTrack: {
+    height: 8,
+    backgroundColor: '#e9ecef',
+    borderRadius: 4,
+    overflow: 'hidden',
+    marginBottom: 4,
+  },
+  chartBarFill: {
+    height: '100%',
+    borderRadius: 4,
+  },
+  chartBarValue: {
     fontSize: 10,
-    color: '#6c757d',
+    color: '#666',
+    textAlign: 'right',
   },
   recommendationsContainer: {
     backgroundColor: '#fff',
