@@ -199,27 +199,30 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
         
         <View style={styles.sliderContainer}>
           <Text style={styles.sliderLabel}>S$2,000</Text>
-          <View style={styles.sliderTrack}>
+          <TouchableOpacity
+            style={styles.sliderTrack}
+            onPress={(event) => {
+              const trackWidth = 200; // Fixed track width for calculation
+              const clickX = event.nativeEvent.locationX;
+              const percentage = Math.max(0, Math.min(1, clickX / trackWidth));
+              const newValue = Math.round(2000 + (percentage * (50000 - 2000)));
+              updateSpendingPercentages(newValue);
+            }}
+            activeOpacity={0.7}
+          >
             <View 
               style={[
                 styles.sliderProgress, 
                 { width: `${((profile.monthlySpendingAppetite || 5000) - 2000) / (50000 - 2000) * 100}%` }
               ]} 
             />
-            <TouchableOpacity
+            <View
               style={[
                 styles.sliderThumb,
                 { left: `${((profile.monthlySpendingAppetite || 5000) - 2000) / (50000 - 2000) * 100}%` }
               ]}
-              onPress={(event) => {
-                const trackWidth = event.currentTarget.offsetWidth || 200;
-                const clickX = event.nativeEvent.locationX;
-                const percentage = Math.max(0, Math.min(1, clickX / trackWidth));
-                const newValue = Math.round(2000 + (percentage * (50000 - 2000)));
-                updateSpendingPercentages(newValue);
-              }}
             />
-          </View>
+          </TouchableOpacity>
           <Text style={styles.sliderLabel}>S$50,000</Text>
         </View>
 
@@ -822,16 +825,17 @@ const styles = StyleSheet.create({
   },
   sliderTrack: {
     flex: 1,
-    height: 6,
+    height: 20,
     backgroundColor: '#e0e0e0',
-    borderRadius: 3,
+    borderRadius: 10,
     marginHorizontal: 10,
     position: 'relative',
+    justifyContent: 'center',
   },
   sliderProgress: {
     height: '100%',
     backgroundColor: '#007AFF',
-    borderRadius: 3,
+    borderRadius: 10,
   },
   sliderLabel: {
     fontSize: 12,
@@ -841,19 +845,19 @@ const styles = StyleSheet.create({
   },
   sliderThumb: {
     position: 'absolute',
-    top: -8,
-    width: 22,
-    height: 22,
+    top: -6,
+    width: 32,
+    height: 32,
     backgroundColor: '#007AFF',
-    borderRadius: 11,
-    borderWidth: 3,
+    borderRadius: 16,
+    borderWidth: 4,
     borderColor: '#fff',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
-    transform: [{ translateX: -11 }],
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+    transform: [{ translateX: -16 }],
   },
   quickSelectContainer: {
     marginBottom: 15,
