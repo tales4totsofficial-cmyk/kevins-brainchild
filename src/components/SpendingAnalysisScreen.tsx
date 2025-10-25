@@ -150,30 +150,32 @@ export const SpendingAnalysisScreen: React.FC<SpendingAnalysisScreenProps> = ({
   };
 
   const renderSummary = () => {
-    const totalSpending = spendingSummary.categories.reduce((sum, cat) => sum + cat.amount, 0);
-    const totalPotentialSavings = recommendation.primaryCombination.estimatedTotalValue - recommendation.primaryCombination.totalAnnualFees;
+    const monthlySpending = spendingSummary.categories.reduce((sum, cat) => sum + cat.amount, 0);
+    const annualSpending = monthlySpending * 12;
+    const estimatedSavings = recommendation.primaryCombination.estimatedTotalValue - recommendation.primaryCombination.totalAnnualFees;
+    const recommendedVendors = recommendation.primaryCombination.cards.length;
     
     return (
       <View style={styles.summaryContainer}>
         <Text style={styles.summaryTitle}>💰 Analysis Summary</Text>
         <Text style={styles.summaryDescription}>
-          Based on your spending patterns, here's how you can optimize your credit card usage
+          Your personalized credit card optimization strategy
         </Text>
         
         <View style={styles.summaryStats}>
           <View style={styles.summaryStat}>
-            <Text style={styles.summaryStatLabel}>Total Monthly Spending</Text>
-            <Text style={styles.summaryStatValue}>S${totalSpending.toLocaleString()}</Text>
+            <Text style={styles.summaryStatLabel}>1. Estimated Annual Spending</Text>
+            <Text style={styles.summaryStatValue}>S${annualSpending.toLocaleString()}</Text>
           </View>
           
           <View style={styles.summaryStat}>
-            <Text style={styles.summaryStatLabel}>Potential Annual Value</Text>
-            <Text style={styles.summaryStatValue}>S${totalPotentialSavings.toLocaleString()}</Text>
+            <Text style={styles.summaryStatLabel}>2. Estimated Savings</Text>
+            <Text style={styles.summaryStatValue}>S${estimatedSavings.toLocaleString()}</Text>
           </View>
           
           <View style={styles.summaryStat}>
-            <Text style={styles.summaryStatLabel}>Recommended Cards</Text>
-            <Text style={styles.summaryStatValue}>{recommendation.primaryCombination.cards.length}</Text>
+            <Text style={styles.summaryStatLabel}>3. Recommended Vendors</Text>
+            <Text style={styles.summaryStatValue}>{recommendedVendors}</Text>
           </View>
         </View>
       </View>
