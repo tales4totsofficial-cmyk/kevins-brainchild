@@ -249,22 +249,6 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
           </View>
         </View>
 
-        <View style={styles.customAmountContainer}>
-          <Text style={styles.customAmountLabel}>Or enter custom amount:</Text>
-          <TextInput
-            style={styles.customAmountInput}
-            value={profile.monthlySpendingAppetite?.toString() || ''}
-            onChangeText={(text) => {
-              const amount = parseInt(text) || 0;
-              if (amount >= 2000 && amount <= 50000) {
-                updateSpendingPercentages(amount);
-              }
-            }}
-            placeholder="Enter amount"
-            keyboardType="numeric"
-            selectTextOnFocus={true}
-          />
-        </View>
 
         <Text style={styles.sliderDescription}>
           How much are you comfortable spending per month on credit cards?
@@ -898,27 +882,6 @@ const styles = StyleSheet.create({
     color: '#666',
     textAlign: 'center',
     fontStyle: 'italic',
-  },
-  customAmountContainer: {
-    marginTop: 16,
-    marginBottom: 12,
-  },
-  customAmountLabel: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 8,
-    textAlign: 'center',
-  },
-  customAmountInput: {
-    borderWidth: 2,
-    borderColor: '#007AFF',
-    borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
-    backgroundColor: '#fff',
-    textAlign: 'center',
-    fontWeight: '600',
-    color: '#333',
   },
   spendingGrid: {
     flexDirection: 'row',
