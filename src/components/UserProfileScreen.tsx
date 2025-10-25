@@ -107,18 +107,20 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
         }
       };
       
-      // Validate total spending doesn't exceed monthly spending appetite
+      // Allow updates but show warning if over budget
       if (field === 'amount') {
         const totalSpending = calculateTotalSpending(updatedProfile);
         const monthlyAppetite = updatedProfile.monthlySpendingAppetite || 0;
         
         if (totalSpending > monthlyAppetite) {
-          Alert.alert(
-            'Spending Exceeds Budget',
-            `Total spending (S$${totalSpending.toLocaleString()}) exceeds your monthly spending appetite (S$${monthlyAppetite.toLocaleString()}). Please adjust your spending amounts.`,
-            [{ text: 'OK' }]
-          );
-          return prev; // Don't update if validation fails
+          // Show warning but still allow the update
+          setTimeout(() => {
+            Alert.alert(
+              'Budget Warning',
+              `Total spending (S$${totalSpending.toLocaleString()}) exceeds your monthly spending appetite (S$${monthlyAppetite.toLocaleString()}). Consider adjusting your spending amounts.`,
+              [{ text: 'OK' }]
+            );
+          }, 100);
         }
       }
       
@@ -358,8 +360,9 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
             style={styles.spendingInput}
             value={profile.dining?.amount?.toString() || ''}
             onChangeText={(text) => updateSpendingCategory('dining', 'amount', parseInt(text) || 0)}
-            placeholder="Amount"
+            placeholder="Enter amount"
             keyboardType="numeric"
+            selectTextOnFocus={true}
           />
           <View style={styles.frequencyButtons}>
             {['daily', 'weekly', 'monthly'].map((freq) => (
@@ -388,8 +391,9 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
             style={styles.spendingInput}
             value={profile.travel?.amount?.toString() || ''}
             onChangeText={(text) => updateSpendingCategory('travel', 'amount', parseInt(text) || 0)}
-            placeholder="Amount"
+            placeholder="Enter amount"
             keyboardType="numeric"
+            selectTextOnFocus={true}
           />
           <View style={styles.frequencyButtons}>
             {['daily', 'weekly', 'monthly'].map((freq) => (
@@ -418,8 +422,9 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
             style={styles.spendingInput}
             value={profile.shopping?.amount?.toString() || ''}
             onChangeText={(text) => updateSpendingCategory('shopping', 'amount', parseInt(text) || 0)}
-            placeholder="Amount"
+            placeholder="Enter amount"
             keyboardType="numeric"
+            selectTextOnFocus={true}
           />
           <View style={styles.frequencyButtons}>
             {['daily', 'weekly', 'monthly'].map((freq) => (
@@ -448,8 +453,9 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
             style={styles.spendingInput}
             value={profile.groceries?.amount?.toString() || ''}
             onChangeText={(text) => updateSpendingCategory('groceries', 'amount', parseInt(text) || 0)}
-            placeholder="Amount"
+            placeholder="Enter amount"
             keyboardType="numeric"
+            selectTextOnFocus={true}
           />
           <View style={styles.frequencyButtons}>
             {['daily', 'weekly', 'monthly'].map((freq) => (
@@ -478,8 +484,9 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
             style={styles.spendingInput}
             value={profile.entertainment?.amount?.toString() || ''}
             onChangeText={(text) => updateSpendingCategory('entertainment', 'amount', parseInt(text) || 0)}
-            placeholder="Amount"
+            placeholder="Enter amount"
             keyboardType="numeric"
+            selectTextOnFocus={true}
           />
           <View style={styles.frequencyButtons}>
             {['daily', 'weekly', 'monthly'].map((freq) => (
@@ -508,8 +515,9 @@ export const UserProfileScreen: React.FC<UserProfileScreenProps> = ({
             style={styles.spendingInput}
             value={profile.utilities?.amount?.toString() || ''}
             onChangeText={(text) => updateSpendingCategory('utilities', 'amount', parseInt(text) || 0)}
-            placeholder="Amount"
+            placeholder="Enter amount"
             keyboardType="numeric"
+            selectTextOnFocus={true}
           />
           <View style={styles.frequencyButtons}>
             {['daily', 'weekly', 'monthly'].map((freq) => (
@@ -852,14 +860,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   spendingInput: {
-    borderWidth: 1,
-    borderColor: '#ddd',
+    borderWidth: 2,
+    borderColor: '#007AFF',
     borderRadius: 8,
-    padding: 10,
-    fontSize: 14,
+    padding: 12,
+    fontSize: 16,
     backgroundColor: '#fff',
     marginBottom: 8,
     textAlign: 'center',
+    fontWeight: '600',
+    color: '#333',
   },
   preferencesSection: {
     marginBottom: 16,
